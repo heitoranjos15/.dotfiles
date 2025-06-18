@@ -1,0 +1,192 @@
+#!/usr/bin/env bash
+anchors="${HOME}/tmux-anchors"
+anchors_json="${HOME}/tmux-anchors.json"
+workpath="${HOME}/work"
+personalpath="${HOME}/projects"
+
+command=$1
+argument=$2
+argument2=$3
+
+if [[ -z "$anchors_json" ]]; then
+   echo "Error: anchors_json variable is not set."
+   return 1
+fi
+
+if [[ ! -f "$anchors_json" ]]; then
+  echo "Error: File '$anchors_json' does not exist."
+  return 1
+fi
+
+env=$(jq -r '.env' $anchors_json)
+anchors_list=$(jq -r --arg key "$env" '.[$key][]' "$anchors_json")
+
+add() {
+  if [[ $env == "working" ]]; then
+    path="$workpath/$anchored"
+  else
+    path="$personalpath/$anchored"
+  fi
+
+  if [[ ! -e "$path" ]]; then
+    echo "Path '$path' does not exist."
+    return 1
+  fi
+
+  len=$(jq -r --arg key "$env" '.[$key] | length' "$anchors_json")
+  for (( i=0; i<$len; i++ )); do
+    if [ $argument == $(jq -r --arg key "$env" --argjson index "$i" '.[$key][$index]' "$anchors_json") ]; then
+      echo "Anchor already exists"
+      return 1
+    fi
+  done
+
+  jq --arg key "$env" --arg value "$argument" '.[$key] += [$value]' "$anchors_json" > "$anchors_json.tmp" && mv "$anchors_json.tmp" "$anchors_json"
+}
+
+go() {
+  anchored=$(jq -r --arg key "$env" --argjson index "$argument" '.[$key][$index]' "$anchors_json")
+
+  tmux_running=$(pgrep tmux)
+
+  if [[ $env == "working" ]]; then
+    path="$workpath/$anchored"
+  else
+    path="$personalpath/$anchored"
+  fi
+
+  if [[ ! -e "$path" ]]; then
+    echo "Path '$path' does not exist."
+    return 1
+  fi
+
+  if [[ -z $TMUX ]] && [[ -z $tmux_running ]]; then
+    tmux new-session -s $anchored -c "$path"
+
+    tmux new-window -n  -c $path -t $anchored
+    tmux new-window -n _ -c $path -t $anchored
+    tmux new-window -n . -c $path -t $anchored
+
+    exit 0
+  fi
+
+  if ! tmux has-session -t=$anchored 2> /dev/null; then
+    tmux new-session -ds $anchored -c "$path"
+
+    tmux new-window -n  -c $path -t $anchored
+    tmux new-window -n _ -c $path -t $anchored
+    tmux new-window -n . -c $path -t $anchored
+  fi
+
+
+  tmux switch-client -t $anchored
+}
+
+set_env() {
+  jq --arg key "$env" --arg value "$argument" '.env = $value' "$anchors_json" > "$anchors_json.tmp" && mv "$anchors_json.tmp" "$anchors_json"
+}
+
+view() {
+  values=$(jq -r --arg key "$env" '.[$key][]' "$anchors_json")
+
+  if [[ -z "$values" ]]; then
+    echo "No anchors found"
+    return 1
+  fi
+
+  echo "$values"
+}
+
+delete() {
+  anchored=$(jq -r --arg key "$env" --argjson index "$argument" '.[$key][$index]' "$anchors_json")
+
+  jq --arg key "$env" --argjson index "$argument" 'del(.[$key][$index])' "$anchors_json" > "$anchors_json.tmp" && mv "$anchors_json.tmp" "$anchors_json"
+}
+
+edit() {
+  anchored=$(jq -r --arg key "$env" --argjson index "$argument" '.[$key][$index]' "$anchors_json")
+
+  jq --arg key "$env" --argjson index "$argument" --arg value "$argument2" '.[$key][$index] = $value' "$anchors_json" > "$anchors_json.tmp" && mv "$anchors_json.tmp" "$anchors_json"
+}
+
+clean() {
+  jq --arg key "$env" '.[$key] = []' "$anchors_json" > "$anchors_json.tmp" && mv "$anchors_json.tmp" "$anchors_json"
+}
+
+workspace() {
+  clean
+  services="$argument"
+  
+  IFS=',' read -r -a new_values <<< "$services"
+
+  for key in "${new_values[@]}"; do
+    # TODO: handle the case when the key is "." to add lc and service_clinical only
+    # if [[ $key == "." ]]; then
+    #   value=$(jq -r --arg key "$key" '.aliases[$key]' "$anchors_json")
+    #   return value
+    # fi
+
+    found=$(jq -r --arg key "$key" '.aliases[$key]' "$anchors_json")
+
+    if [[ -n $found ]]; then
+      value=$found
+    fi
+
+    if [[ $env == "working" ]]; then
+      path="$workpath/$value"
+    else
+      path="$personalpath/$value"
+    fi
+
+    if [[ ! -e "$path" ]]; then
+      echo "Path '$path' does not exist."
+      return 1
+    fi
+
+    jq --arg key "$env" --arg new_value "$value" '.[$key] += [$new_value]' "$anchors_json" > tmp.json && mv tmp.json "$anchors_json"
+  done
+}
+
+aliases(){
+  value=$(jq -r --arg key "$env" --arg value "$value" '.aliases' "$anchors_json")
+  echo $value
+}
+
+case $command in
+  add) 
+    add
+    view
+    ;;
+  go)
+    go
+    ;;
+  view)
+    view
+    ;;
+  delete)
+    delete
+    ;;
+  clean)
+    clean
+    ;;
+  edit)
+    edit
+    ;;
+  set_env)
+    set_env
+    echo "Environment set to $argument"
+    ;;
+  get_env)
+    echo $env
+    ;;
+  workspace)
+    workspace
+    view
+    ;;
+  aliases)
+    aliases
+    ;;
+  *)
+    echo "invalid command"
+    ;;
+esac

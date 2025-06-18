@@ -34,4 +34,4 @@ vim.g.netrw_localrmdir = 'rm -r'
 
 vim.cmd("autocmd FileType php setlocal shiftwidth=4 softtabstop=4 expandtab")
 
-vim.cmd("autocmd FileType go setlocal shiftwidth=8 softtabstop=8 expandtab")
+-- vim.cmd("autocmd FileType go setlocal tabstop=8 shiftwidth=8 expandtab")

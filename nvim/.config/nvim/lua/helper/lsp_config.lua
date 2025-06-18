@@ -40,7 +40,7 @@ return function(_config)
             nnoremap("<leader>vd", function() vim.diagnostic.open_float() end)
             nnoremap("<leader>vrr", function() vim.lsp.buf.references() end)
             inoremap("<C-h>", function() vim.lsp.buf.signature_help() end)
-            nnoremap('<space>ern',function() vim.lsp.buf.rename() end)
+            nnoremap('<space>lrn',function() vim.lsp.buf.rename() end)
             nnoremap("gi", function() vim.lsp.buf.implementation() end)
             -- if client.server_capabilities.documentFormattingProvider then
             --     vim.api.nvim_create_autocmd("BufWritePre", {

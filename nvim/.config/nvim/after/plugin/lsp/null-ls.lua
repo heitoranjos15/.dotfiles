@@ -9,8 +9,10 @@ null_ls.setup {
     }),
     null_ls.builtins.diagnostics.credo,
     null_ls.builtins.diagnostics.flake8,
-    null_ls.builtins.diagnostics.golangci_lint,
+    -- null_ls.builtins.diagnostics.golangci_lint,
     null_ls.builtins.diagnostics.php,
+    -- null_ls.builtins.formatting.goimports,
+    null_ls.builtins.formatting.gofmt,
   },
   -- on_attach = function(client, bufnr)
     -- if client.server_capabilities.documentFormattingProvider then
@@ -25,3 +27,10 @@ null_ls.setup {
 }
 
 vim.api.nvim_create_user_command("AutoFormat", function() vim.lsp.buf.format() end, {})
+
+vim.api.nvim_create_autocmd("BufWritePre", {
+  pattern = "*.go",
+  callback = function()
+    vim.lsp.buf.format({ async = false })
+  end,
+})

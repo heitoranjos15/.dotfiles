@@ -18,7 +18,9 @@ require('nvim-treesitter.configs').setup {
       'typescript',
       'javascript',
       'php',
-      'go'
+      'go',
+      "markdown",
+      "markdown_inline" 
   },
  context_commentstring = {
     enable = true,

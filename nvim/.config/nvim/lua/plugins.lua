@@ -34,6 +34,12 @@ return require('packer').startup(function(use)
   -- LSP
   use 'neovim/nvim-lspconfig'
   use 'jose-elias-alvarez/null-ls.nvim'
+
+  use {
+    "williamboman/mason.nvim",
+    "williamboman/mason-lspconfig.nvim",
+  }
+
   use {
     "smjonas/inc-rename.nvim",
     config = function()
@@ -57,10 +63,22 @@ return require('packer').startup(function(use)
     opts = function(_, opts)
       opts.presets.lsp_doc_border = true
     end,
-    dependencies = {'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify'}
+    dependencies = { 'MunifTanjim/nui.nvim', 'rcarriga/nvim-notify' }
   }
 
-  use 'folke/trouble.nvim'
+  use({
+    'folke/trouble.nvim',
+    config = function()
+      require("trouble").setup()
+    end
+  })
+
+  use({
+    "stevearc/conform.nvim",
+    config = function()
+      require("conform").setup()
+    end,
+  })
 
   -- Treesitter
   use { 'nvim-treesitter/nvim-treesitter', run = ':TSUpdate' }
@@ -74,7 +92,7 @@ return require('packer').startup(function(use)
   use 'kyazdani42/nvim-web-devicons'
   use {
     'nvim-lualine/lualine.nvim',
-    requires = {'kyazdani42/nvim-web-devicons', opt = true}
+    requires = { 'kyazdani42/nvim-web-devicons', opt = true }
   }
 
   -- GIT
@@ -95,26 +113,46 @@ return require('packer').startup(function(use)
   use {
     'numToStr/Comment.nvim',
     config = function()
-        require('Comment').setup({
-          toggler = {
-        ---Line-comment toggle keymap
+      require('Comment').setup({
+        toggler = {
+          ---Line-comment toggle keymap
           line = 'gcc',
-        ---Block-comment toggle keymap
+          ---Block-comment toggle keymap
           block = 'gbc',
-          },
-        })
-        require('Comment.ft').set('sql', {'--%s', '/*%s*/'})
-        require('Comment.ft').set('mysql', {'--%s', '/*%s*/'})
+        },
+      })
+      require('Comment.ft').set('sql', { '--%s', '/*%s*/' })
+      require('Comment.ft').set('mysql', { '--%s', '/*%s*/' })
     end
-   }
+  }
   use {
     "gennaro-tedesco/nvim-jqx",
     ft = { "json", "yaml" },
   } -- jq for json and yaml
 
 
+  use 'lukas-reineke/indent-blankline.nvim'
 
-  -- Can help in the future
+  use 'heitoranjos15/booky.nvim'
 
+  -- use 'junegunn/vim-easy-align'
+
+
+  use { 'stevearc/oil.nvim',
+    config = function()
+      require("oil").setup{
+          column = { "icon" },
+          keymaps = {
+            ["<C-h>"] = false,
+            ["<M-h>"] = "actions.select_split",
+            ["<C-p>"] = false,
+          },
+          view_options = {
+            show_hidden = true,
+          },
+        }
+        vim.keymap.set("n", "<C-n>", "<CMD>Oil<CR>")
+        vim.keymap.set("n", "<leader>-", require("oil").toggle_float, { noremap = true, silent = true })
+        end,
+      }
 end)
-

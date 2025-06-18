@@ -4,7 +4,7 @@ local vnoremap = Remap.vnoremap
 local inoremap = Remap.inoremap
 local xnoremap = Remap.xnoremap
 
-nnoremap('<C-n>', ':Explore<CR>')
+-- nnoremap('<C-n>', ':<CMD>Oil<CR>')
 
 vnoremap("J", ":m '>+1<CR>gv=gv")
 vnoremap("K", ":m '<-2<CR>gv=gv")
@@ -12,6 +12,8 @@ vnoremap("K", ":m '<-2<CR>gv=gv")
 nnoremap('<leader>u', ':UndotreeShow<CR>')
 
 nnoremap('<leader>db', ':DBUI<CR>')
+
+nnoremap('<leader>e', ':luafile %<CR>') 
 
 nnoremap('th', ':tabfirst<CR>')
 nnoremap('tk', ':tabnext<CR>')

@@ -1,8 +1,10 @@
 local Remap = require('helper.keymap')
 local nnoremap = Remap.nnoremap
 local telescope = require('telescope.builtin')
+local actions = require("telescope.actions")
+local builtin = require("telescope.builtin")
 
-nnoremap('<C-p>', function()
+nnoremap('<leader>;', function()
     telescope.find_files()
 end)
 
@@ -42,7 +44,7 @@ end
 commands.awesome_wm = function()
     builtin.find_files({
         prompt_title = '< AWESOMEWM >',
-        cwd = '~/dotfiles/awesome/.config/awesome',
+        cwd = '~/.dotfiles/awesome/.config/awesome',
         hidden = true,
     })
 end
