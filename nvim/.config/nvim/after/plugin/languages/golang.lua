@@ -1,9 +1,8 @@
 local lsp = require('lspconfig')
--- local util = require("lspconfig.util")
-local config = require('helper.lsp_config')
+local config = require('lsp_default')
 
-lsp.gopls.setup(config({
-  root_dir = require('lspconfig.util').root_pattern("go.work", "go.mod", ".git"),
+require("lspconfig").gopls.setup(config({
+  root_dir = require("lspconfig.util").root_pattern("go.work", "go.mod", ".git"),
   flags = {
     debounce_text_changes = 300,
   },
@@ -22,5 +21,5 @@ lsp.gopls.setup(config({
         vendor = false,
       },
     },
-  }
+  },
 }))

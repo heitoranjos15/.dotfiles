@@ -16,7 +16,4 @@ local formatted = string.format(
 print("Formatted date: " .. todo_path..formatted.."/tasks.md")
 booky.setup.todo_file_path = vim.fn.expand(todo_path..formatted.."/tasks.md")
 
-local Remap = require('helper.keymap')
-local nnoremap = Remap.nnoremap
-
 -- nnoremap('<leader>e', function() booky.open_split() end)

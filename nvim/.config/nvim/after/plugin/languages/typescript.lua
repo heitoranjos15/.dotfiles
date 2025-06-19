@@ -1,5 +1,5 @@
 local lsp = require('lspconfig')
-local config = require('helper.lsp_config')
+local config = require('lsp_default')
 
 lsp.ts_ls.setup(config({
   filetypes =  { "typescript", "typescriptreact", "typescript.tsx", "javascript", "javascriptreact", "javascript.jsx" },

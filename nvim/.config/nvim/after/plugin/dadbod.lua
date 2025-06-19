@@ -4,3 +4,5 @@ vim.g.dbs = {
 }
 
 vim.cmd('autocmd FileType dbout setlocal nofoldenable')
+
+vim.keymap.set("n",'<leader>db', ':DBUI<CR>')

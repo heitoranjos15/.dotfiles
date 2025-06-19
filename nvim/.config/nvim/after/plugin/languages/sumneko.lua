@@ -1,4 +1,4 @@
 local lsp = require('lspconfig')
-local config = require('helper.lsp_config')
+local config = require('lsp_default')
 
 lsp.lua_ls.setup{}
