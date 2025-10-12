@@ -1,7 +1,3 @@
-vim.o.showtabline = 2
-
-vim.opt.sessionoptions = 'curdir,folds,globals,help,tabpages,terminal,winsize'
-
 local theme = {
   fill = 'TabLineFill',
   head = 'TabLine',

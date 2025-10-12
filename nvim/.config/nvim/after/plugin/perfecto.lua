@@ -138,7 +138,7 @@ end
 local schedule = read_json(path_config)
 
 -- show_schedule_table(schedule)
-vim.keymap.set("n", "<leader>ss", function()
+vim.keymap.set("n", "<leader>o", function()
   if not schedule then
     vim.notify("No schedule data found. Please create a schedule first.", vim.log.levels.WARN)
     return

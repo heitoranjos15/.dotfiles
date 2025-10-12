@@ -13,10 +13,11 @@ vim.keymap.set('n', '<C-j>', '<C-w>j', { noremap = true })
 vim.keymap.set('n', '<C-k>', '<C-w>k', { noremap = true })
 vim.keymap.set('n', '<C-l>', '<C-w>l', { noremap = true })
 
-vim.keymap.set('n', '<A-l>',  ':vertical resize -2<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<A-h>', ':vertical resize +2<CR>', { noremap = true, silent = true })
-vim.keymap.set('n', '<A-j>',    ':resize -2<CR>',          { noremap = true, silent = true })
-vim.keymap.set('n', '<A-k>',  ':resize +2<CR>',          { noremap = true, silent = true })
+-- set window bottom
+vim.keymap.set('n', '<A-j>', '<C-w>J', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-k>', '<C-w>K', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-h>', '<C-w>H', { noremap = true, silent = true })
+vim.keymap.set('n', '<A-l>', '<C-w>L', { noremap = true, silent = true })
 
 vim.keymap.set('n', '<A-Left>',  ':vertical resize -2<CR>', { noremap = true, silent = true })
 vim.keymap.set('n', '<A-Right>', ':vertical resize +2<CR>', { noremap = true, silent = true })

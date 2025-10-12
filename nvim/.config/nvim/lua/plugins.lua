@@ -52,6 +52,7 @@ return require('packer').startup(function(use)
 
   -- AI
   use 'github/copilot.vim'
+  use "CopilotC-Nvim/CopilotChat.nvim"
 
   -- DB
   use 'tpope/vim-dadbod'
@@ -108,13 +109,8 @@ return require('packer').startup(function(use)
   }
   use { 'SmiteshP/nvim-navic' }
 
-  use { 'heitoranjos15/booky.nvim' }
 
-  use { 'nvimdev/indentmini.nvim',
-    config = function()
-      require("indentmini").setup() -- use default config
-    end,
-  }
+  use { 'heitoranjos15/booky.nvim' }
 
   use { 'stevearc/oil.nvim',
     config = function()
@@ -129,16 +125,17 @@ return require('packer').startup(function(use)
           show_hidden = true,
         },
       }
-      vim.keymap.set("n", "<C-n>", "<CMD>Oil<CR>")
+      vim.keymap.set("n", "<leader>n", "<CMD>Oil<CR>")
       vim.keymap.set("n", "<leader>-", require("oil").toggle_float, { noremap = true, silent = true })
     end,
   }
 
-use {"akinsho/toggleterm.nvim", tag = '*', config = function()
-  require("toggleterm").setup()
-end}
+  use { "akinsho/toggleterm.nvim", tag = '*', config = function()
+    require("toggleterm").setup()
+  end }
 
   use { 'nanozuki/tabby.nvim' }
+  use 'junegunn/fzf.vim'
 
   if packer_bootstrap then
     require('packer').sync()

@@ -7,12 +7,12 @@ function _G.set_terminal_keymaps()
   vim.keymap.set('t', '<C-j>', [[<Cmd>wincmd j<CR>]], opts)
   vim.keymap.set('t', '<C-k>', [[<Cmd>wincmd k<CR>]], opts)
   vim.keymap.set('t', '<C-l>', [[<Cmd>wincmd l<CR>]], opts)
-  vim.keymap.set('t', '<C-c>', [[<C-\><C-n>:q<CR>]], opts)
+  -- vim.keymap.set('t', '<C-c>', [[<C-\><C-n>:q<CR>]], opts)
 end
 
-vim.keymap.set('n', '<leader>tt', ':TermNew direction=tab<CR>', {silent = true, noremap = true})
-vim.keymap.set('n', '<leader>ts', ':TermNew <CR>', {silent = true, noremap = true})
-vim.keymap.set('n', '<leader>tv', ':TermNew direction=vertical<CR>', {silent = true, noremap = true})
-vim.keymap.set('n', '<leader>tf', ':TermNew direction=float<CR>', {silent = true, noremap = true})
+vim.keymap.set('n', '<leader>tt', ':tabnew | terminal<CR>', {silent = true, noremap = true})
+vim.keymap.set('n', '<leader>ts', ':split | terminal <CR>', {silent = true, noremap = true})
+vim.keymap.set('n', '<leader>tv', ':vsplit | terminal<CR>', {silent = true, noremap = true})
+vim.keymap.set('n', '<leader>tf', ':ToggleTerm direction=float<CR>', {silent = true, noremap = true})
 
 vim.cmd('autocmd! TermOpen term://* lua set_terminal_keymaps()')
