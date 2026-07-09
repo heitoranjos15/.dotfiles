@@ -1,4 +1,4 @@
-# If you come from bash you might have to change your $PATH.
+ # If you come from bash you might have to change your $PATH.
 # export PATH=$HOME/bin:/usr/local/bin:$PATH
 
 # Path to your oh-my-zsh installation.
@@ -10,6 +10,7 @@ export ZSH="${HOME}/.oh-my-zsh"
 export PATH=${PATH}:/usr/local/mysql/bin/
 export PATH="${PATH}:${HOME}/.local/bin/"
 export PATH="${PATH}:/path/to/elixir/bin"
+export PATH="$HOME/go/bin:$PATH"
 export GOPATH=$HOME/go
 export PATH=$PATH:/usr/local/go/bin:$GOPATH/bin
 
@@ -127,7 +128,6 @@ plugins=(
     zsh-fzf-history-search
     zsh-syntax-highlighting
 )
-
 source $ZSH/oh-my-zsh.sh
 source ~/.zsh_profile
 source ~/.zsh_env
@@ -164,3 +164,16 @@ export NVM_DIR="$HOME/.nvm"
 [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"  # This loads nvm
 [ -s "$NVM_DIR/bash_completion" ] && \. "$NVM_DIR/bash_completion"  # This loads nvm bash_completion
 
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
+
+# pnpm
+export PNPM_HOME="/home/heitor/.local/share/pnpm"
+case ":$PATH:" in
+  *":$PNPM_HOME:"*) ;;
+  *) export PATH="$PNPM_HOME:$PATH" ;;
+esac
+# pnpm end
+
+# opencode
+export PATH=/home/heitor/.opencode/bin:$PATH

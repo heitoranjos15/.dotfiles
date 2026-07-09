@@ -1,0 +1,31 @@
+export FZF_CTRL_T_COMMAND=""
+bindkey -s ^t "tmux-sessionizer\n"
+
+alias tk="tmux kill-server"
+alias ta="tmux attach"
+
+alias docker-compose="docker compose"
+# alias air='/.bin/air'
+
+alias \
+  la="exa -al --color=always --group-directories-first" \
+  ls="exa -a --color=always --group-directories-first" \
+  ll="exa -l --color=always --group-directories-first" \
+  lt="exa -aT --color=always --group-directories-first" \
+  l.='exa -a | egrep "^\."'
+
+alias todo="${HOME}/todo/todo-manager.sh open"
+
+bindkey -s ^s "${HOME}/todo/todo-manager.sh open\n"
+
+alias rofi-bluetooth="${HOME}/.config/rofi/scripts/rofi-bluetooth"
+alias bt="${HOME}/.config/rofi/scripts/rofi-bluetooth"
+alias rofi-scrot="${HOME}/.config/rofi/scripts/rofi-scrot"
+
+bindkey -s ^b "${HOME}/.config/rofi/scripts/rofi-bluetooth\n"
+
+alias kbt="${HOME}/scripts/keyboard_bluetooth.sh"
+
+alias btinfo="upower -i /org/freedesktop/UPower/devices/battery_BAT0| grep -E 'state|to\ full|percentage'"
+
+eval $(ssh-agent) > /dev/null

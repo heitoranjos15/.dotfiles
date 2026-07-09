@@ -2,10 +2,7 @@ local cmp = require('cmp')
 local lspkind = require('lspkind')
 local luasnip = require('luasnip')
 
-vim.g.copilot_no_tab_map = true
-vim.api.nvim_set_keymap("i", "<C-j>", 'copilot#Accept("<CR>")', { silent = true, expr = true })
-
-
+-- Replace vim.g.copilot_no_tab_map with copilot.lua's own setup
 cmp.setup({
     snippet = {
         expand = function(args)
@@ -40,15 +37,19 @@ cmp.setup({
             end
         end,
     }),
-
-  sources = cmp.config.sources({
-    { name = 'copilot' }, 
-    { name = 'nvim_lsp' },
-    { name = 'buffer' },
-  }),
-  formatting = {
-    format = lspkind.cmp_format({ with_text = false, maxwidth = 50 })
-  }
+    sources = cmp.config.sources({
+        { name = 'copilot',  group_index = 2 },
+        { name = 'nvim_lsp', group_index = 2 },
+        { name = 'buffer',   group_index = 2 },
+        { name = 'path',     group_index = 2 },
+    }),
+    formatting = {
+        format = lspkind.cmp_format({
+            mode = 'symbol',          -- 'with_text' is deprecated, use 'mode'
+            maxwidth = 50,
+            symbol_map = { Copilot = "" },
+        })
+    }
 })
 
 vim.cmd [[
