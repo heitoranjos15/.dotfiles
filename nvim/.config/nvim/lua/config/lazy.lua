@@ -1,262 +1,284 @@
 -- bootstrap lazy.nvim
 local lazypath = vim.fn.stdpath("data") .. "/lazy/lazy.nvim"
 if not vim.loop.fs_stat(lazypath) then
-	vim.fn.system({
-		"git",
-		"clone",
-		"--filter=blob:none",
-		"https://github.com/folke/lazy.nvim.git",
-		"--branch=stable",
-		lazypath,
-	})
+  vim.fn.system({
+    "git",
+    "clone",
+    "--filter=blob:none",
+    "https://github.com/folke/lazy.nvim.git",
+    "--branch=stable",
+    lazypath,
+  })
 end
 vim.opt.rtp:prepend(lazypath)
 
 require("lazy").setup({
-	-- Colorscheme
-	{
-		"sainnhe/everforest",
-		lazy = false,
-		priority = 1000,
-		config = function()
-			vim.g.everforest_background = "hard"
-			vim.g.everforest_better_performance = 1
-			vim.g.everforest_transparent_background = 2
-			vim.opt.termguicolors = true
-			vim.cmd("colorscheme everforest")
-			vim.cmd("hi Normal guibg=NONE ctermbg=NONE")
-		end,
-	},
+  -- Colorscheme
+  {
+    "sainnhe/everforest",
+    lazy = false,
+    priority = 1000,
+    config = function()
+      vim.g.everforest_background = "hard"
+      vim.g.everforest_better_performance = 1
+      vim.g.everforest_transparent_background = 2
+      vim.opt.termguicolors = true
+      vim.cmd("colorscheme everforest")
+      vim.cmd("hi Normal guibg=NONE ctermbg=NONE")
+    end,
+  },
 
-	-- LSP
-	-- note: null
-	{ "nvimtools/none-ls.nvim" },
-	{
-		"neovim/nvim-lspconfig",
-		dependencies = {
-			"williamboman/mason.nvim",
-			"williamboman/mason-lspconfig.nvim",
-		},
-		config = function()
-			require("mason").setup()
-			require("mason-lspconfig").setup({
-				ensure_installed = {
-					"pyright", -- python
-					"ts_ls", -- typescript
-					"gopls", -- go
-					"eslint", -- javascript/typescript linting
-					"yamlls", -- yamlls
-					"lua_ls", -- lua
-					"dockerls", -- docker
-					"docker_compose_language_service", -- docker compose
-				},
-				automatic_installation = true,
-			})
-			require("config.plugins.lsp")
-		end,
-	},
-	"nvimtools/none-ls.nvim",
+  -- LSP
+  -- note: null
+  { "nvimtools/none-ls.nvim" },
+  {
+    "neovim/nvim-lspconfig",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "williamboman/mason-lspconfig.nvim",
+    },
+    config = function()
+      require("mason").setup()
+      require("mason-lspconfig").setup({
+        ensure_installed = {
+          "pyright",                         -- python
+          "ts_ls",                           -- typescript
+          "gopls",                           -- go
+          "eslint",                          -- javascript/typescript linting
+          "yamlls",                          -- yamlls
+          "lua_ls",                          -- lua
+          "dockerls",                        -- docker
+          "docker_compose_language_service", -- docker compose
+        },
+        automatic_installation = true,
+      })
+      require("config.plugins.lsp")
+    end,
+  },
+  "nvimtools/none-ls.nvim",
 
-	-- Telescope
-	{
-		"nvim-telescope/telescope.nvim",
-		dependencies = { "nvim-lua/plenary.nvim", "nvim-lua/popup.nvim" },
-		config = function()
-			require("config.plugins.telescope")
-		end,
-	},
-	-- Lualine
-	{
-		"nvim-lualine/lualine.nvim",
-		dependencies = { "kyazdani42/nvim-web-devicons" },
-		config = function()
-			require("config.plugins.lualine")
-		end,
-	},
-	"kyazdani42/nvim-web-devicons",
+  { "nvim-telescope/telescope-ui-select.nvim" },
+  -- Telescope
+  {
+    "nvim-telescope/telescope.nvim",
+    dependencies = { "nvim-lua/plenary.nvim", "nvim-lua/popup.nvim", "nvim-telescope/telescope-ui-select.nvim" },
+    config = function()
+      require("config.plugins.telescope")
+    end,
+  },
 
-	-- Git
-	{
-		"tpope/vim-fugitive",
-		config = function()
-			vim.keymap.set("n", "<leader>gs", ":G<CR>")
-			vim.keymap.set("n", "<leader>gc", ":Git commit<CR>")
-			vim.keymap.set("n", "<leader>ch", ":diffget //3<CR>")
-			vim.keymap.set("n", "<leader>cu", ":diffget //2<CR>")
-		end,
-	},
-	{
-		"lewis6991/gitsigns.nvim",
-		config = function()
-			require("config.plugins.gitsigns")
-		end,
-	},
-	-- AI
-	{
-		"zbirenbaum/copilot.lua",
-		config = function()
-			require("config.plugins.copilot")
-		end,
-	},
-	{
-		"CopilotC-Nvim/CopilotChat.nvim",
-		config = function()
-			require("CopilotChat").setup({})
-		end,
-	},
+  -- Lualine
+  {
+    "nvim-lualine/lualine.nvim",
+    dependencies = { "kyazdani42/nvim-web-devicons" },
+    config = function()
+      require("config.plugins.lualine")
+    end,
+  },
+  "kyazdani42/nvim-web-devicons",
 
-	-- DB
-	{
-		"tpope/vim-dadbod",
-		config = function()
-			require("config.plugins.dadbod")
-		end,
-	},
-	"kristijanhusak/vim-dadbod-ui",
-	"kristijanhusak/vim-dadbod-completion",
+  -- Git
+  {
+    "tpope/vim-fugitive",
+    config = function()
+      vim.keymap.set("n", "<leader>gs", ":G<CR>")
+      vim.keymap.set("n", "<leader>gc", ":Git commit<CR>")
+      vim.keymap.set("n", "<leader>ch", ":diffget //3<CR>")
+      vim.keymap.set("n", "<leader>cu", ":diffget //2<CR>")
+    end,
+  },
+  {
+    "lewis6991/gitsigns.nvim",
+    config = function()
+      require("config.plugins.gitsigns")
+    end,
+  },
+  -- AI
+  {
+    "zbirenbaum/copilot.lua",
+    config = function()
+      require("config.plugins.copilot")
+    end,
+  },
+  {
+    "CopilotC-Nvim/CopilotChat.nvim",
+    config = function()
+      require("CopilotChat").setup({})
+    end,
+  },
 
-	-- Treesitter
-	{
-		"nvim-treesitter/nvim-treesitter",
-		build = ":TSUpdate",
-		config = function()
-			require("config.plugins.treesitter")
-		end,
-	},
+  -- DB
+  {
+    "tpope/vim-dadbod",
+    config = function()
+      require("config.plugins.dadbod")
+    end,
+  },
+  "kristijanhusak/vim-dadbod-ui",
+  "kristijanhusak/vim-dadbod-completion",
 
-	-- Completion
-	{
-		"hrsh7th/cmp-nvim-lsp",
-		config = function()
-			require("config.plugins.cmp")
-		end,
-	},
+  -- Treesitter
+  {
+    "nvim-treesitter/nvim-treesitter",
+    build = ":TSUpdate",
+    config = function()
+      require("config.plugins.treesitter")
+    end,
+  },
 
-	"zbirenbaum/copilot-cmp",
-	"hrsh7th/cmp-buffer",
-	"hrsh7th/cmp-path",
-	"hrsh7th/nvim-cmp",
-	"onsails/lspkind.nvim",
-	"L3MON4D3/LuaSnip",
+  -- Completion
+  {
+    "hrsh7th/cmp-nvim-lsp",
+    config = function()
+      require("config.plugins.cmp")
+    end,
+  },
 
-	-- UI
-	--   "MunifTanjim/nui.nvim",
-	--   {
-	--    "folke/noice.nvim",
-	--    dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
-	--    opts = {
-	-- presets = { lsp_doc_border = true },
-	-- cmdline = {
-	--     enabled = false,  -- use default vim cmdline
-	-- },
-	-- messages = {
-	--     enabled = false,  -- use default messages
-	-- },
-	--    },
-	--   },
+  "zbirenbaum/copilot-cmp",
+  "hrsh7th/cmp-buffer",
+  "hrsh7th/cmp-path",
+  "hrsh7th/nvim-cmp",
+  "onsails/lspkind.nvim",
+  "L3MON4D3/LuaSnip",
 
-	-- Trouble
-	{
-		"folke/trouble.nvim",
-		tag = "v3.0.0",
-		config = function()
-			require("trouble").setup()
-		end,
-	},
+  -- UI
+  --   "MunifTanjim/nui.nvim",
+  --   {
+  --    "folke/noice.nvim",
+  --    dependencies = { "MunifTanjim/nui.nvim", "rcarriga/nvim-notify" },
+  --    opts = {
+  -- presets = { lsp_doc_border = true },
+  -- cmdline = {
+  --     enabled = false,  -- use default vim cmdline
+  -- },
+  -- messages = {
+  --     enabled = false,  -- use default messages
+  -- },
+  --    },
+  --   },
 
-	-- Editing utilities
-	{
-		"mbbill/undotree",
-		config = function()
-			vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
-		end,
-	},
-	"tpope/vim-surround",
-	{
-		"ThePrimeagen/harpoon",
-		config = function()
-			require("config.plugins.harpoon")
-		end,
-	},
-	{
-		"numToStr/Comment.nvim",
-		config = function()
-			require("Comment").setup({
-				toggler = {
-					line = "gcc",
-					block = "gbc",
-				},
-			})
-			require("Comment.ft").set("sql", { "--%s", "/*%s*/" })
-			require("Comment.ft").set("mysql", { "--%s", "/*%s*/" })
-		end,
-	},
+  -- Trouble
+  {
+    "folke/trouble.nvim",
+    tag = "v3.0.0",
+    config = function()
+      require("trouble").setup()
+    end,
+  },
 
-	-- Navic
-	"SmiteshP/nvim-navic",
+  -- Editing utilities
+  {
+    "mbbill/undotree",
+    config = function()
+      vim.keymap.set("n", "<leader>u", vim.cmd.UndotreeToggle)
+    end,
+  },
+  "tpope/vim-surround",
+  {
+    "ThePrimeagen/harpoon",
+    config = function()
+      require("config.plugins.harpoon")
+    end,
+  },
+  {
+    "numToStr/Comment.nvim",
+    config = function()
+      require("Comment").setup({
+        toggler = {
+          line = "gcc",
+          block = "gbc",
+        },
+      })
+      require("Comment.ft").set("sql", { "--%s", "/*%s*/" })
+      require("Comment.ft").set("mysql", { "--%s", "/*%s*/" })
+    end,
+  },
 
-	-- Your own plugin
-	"heitoranjos15/booky.nvim",
+  -- Navic
+  "SmiteshP/nvim-navic",
 
-	-- Oil
-	{
-		"stevearc/oil.nvim",
-		config = function()
-			require("oil").setup({
-				column = { "icon" },
-				keymaps = {
-					["<C-h>"] = false,
-					["<M-h>"] = "actions.select_split",
-					["<C-p>"] = false,
-				},
-				view_options = {
-					show_hidden = true,
-				},
-			})
-			vim.keymap.set("n", "<leader>n", "<CMD>Oil<CR>")
-			vim.keymap.set("n", "<leader>-", require("oil").toggle_float, { noremap = true, silent = true })
-		end,
-	},
+  -- Your own plugin
+  "heitoranjos15/booky.nvim",
 
-	-- Toggleterm
-	{
-		"akinsho/toggleterm.nvim",
-		tag = "*",
-		config = function()
-			require("toggleterm").setup()
-		end,
-	},
+  -- Oil
+  {
+    "stevearc/oil.nvim",
+    config = function()
+      require("oil").setup({
+        column = { "icon" },
+        keymaps = {
+          ["<C-h>"] = false,
+          ["<M-h>"] = "actions.select_split",
+          ["<C-p>"] = false,
+        },
+        view_options = {
+          show_hidden = true,
+        },
+      })
+      vim.keymap.set("n", "<leader>n", "<CMD>Oil<CR>")
+      vim.keymap.set("n", "<leader>-", require("oil").toggle_float, { noremap = true, silent = true })
+    end,
+  },
 
-	-- Tabs
-	{
-		"nanozuki/tabby.nvim",
-		config = function()
-			require("config.plugins.tabby")
-		end,
-	},
+  -- Toggleterm
+  {
+    "akinsho/toggleterm.nvim",
+    tag = "*",
+    config = function()
+      require("toggleterm").setup()
+    end,
+  },
 
-	-- FZF
-	"junegunn/fzf.vim",
+  -- Tabs
+  {
+    "nanozuki/tabby.nvim",
+    config = function()
+      require("config.plugins.tabby")
+    end,
+  },
 
-	-- Present
-	"tjdevries/present.nvim",
+  -- FZF
+  "junegunn/fzf.vim",
+
+  -- Present
+  "tjdevries/present.nvim",
 
   {
-	"stevearc/conform.nvim",
-	config = function()
-		require("config.plugins.conform")
-	end,
+    "stevearc/conform.nvim",
+    config = function()
+      require("config.plugins.conform")
+    end,
   },
-	{
-		"zapling/mason-conform.nvim",
-		dependencies = {
-			"williamboman/mason.nvim",
-			"stevearc/conform.nvim",
-		},
-		config = function()
-			require("mason-conform").setup({
-				ensure_installed = { "black", "isort" },
-			})
-		end,
-	},
+  {
+    "zapling/mason-conform.nvim",
+    dependencies = {
+      "williamboman/mason.nvim",
+      "stevearc/conform.nvim",
+    },
+    config = function()
+      require("mason-conform").setup({
+        ensure_installed = { "black", "isort" },
+      })
+    end,
+  },
+  { "nvim-neotest/nvim-nio" },
+
+  {
+    "nvim-neotest/neotest",
+    dependencies = {
+      "nvim-lua/plenary.nvim",
+      "nvim-treesitter/nvim-treesitter",
+      "nvim-neotest/neotest-jest",
+    },
+    config = function()
+      require("neotest").setup({
+        adapters = {
+          require("neotest-jest")({
+            jestCommand = "npm test --",
+            jestConfigFile = "jest.config.ts",
+          }),
+        },
+      })
+    end,
+  },
 })

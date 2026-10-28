@@ -1,0 +1,18 @@
+{
+  "allowedUrls": [
+    "https://herdr.dev",
+    "https://raw.githubusercontent.com"
+  ],
+  "theme": "github",
+  "extraKnownMarketplaces": {
+    "superpowers-marketplace": {
+      "source": {
+        "source": "github",
+        "repo": "obra/superpowers-marketplace"
+      }
+    }
+  },
+  "enabledPlugins": {
+    "superpowers@superpowers-marketplace": true
+  }
+}

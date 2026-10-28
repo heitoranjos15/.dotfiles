@@ -1,10 +1,9 @@
 export FZF_CTRL_T_COMMAND=""
-bindkey -s ^t "tmux-sessionizer\n"
+bindkey -s ^t "~/herdr-sessionizer\n"
 
 alias tk="tmux kill-server"
 alias ta="tmux attach"
 
-alias docker-compose="docker compose"
 # alias air='/.bin/air'
 
 alias \
@@ -29,3 +28,27 @@ alias kbt="${HOME}/scripts/keyboard_bluetooth.sh"
 alias btinfo="upower -i /org/freedesktop/UPower/devices/battery_BAT0| grep -E 'state|to\ full|percentage'"
 
 eval $(ssh-agent) > /dev/null
+
+# k9s <cluster> <env>  ->  runs k9s with the matching ~/.kube/config_<cluster>_<env>
+# e.g. `k9s qubed demo`, `k9s kcp prod`
+k9s() {
+  if [[ $# -ne 2 ]]; then
+    echo "Usage: k9s <cluster> <env>"
+    echo "Available:"
+    for f in ${HOME}/.kube/config_*; do
+      name="${f##*/config_}"
+      echo "  k9s ${name/_/ }"
+    done
+    return 1
+  fi
+
+  local cluster="$1" env="$2"
+  local kubeconfig="${HOME}/.kube/config_${cluster}_${env}"
+
+  if [[ ! -f "$kubeconfig" ]]; then
+    echo "No kubeconfig found at $kubeconfig"
+    return 1
+  fi
+
+  KUBECONFIG="$kubeconfig" command k9s
+}

@@ -1,0 +1,43 @@
+#!/usr/bin/env bash
+# herdr-sessionizer: fzf-pick a project dir and open/focus a herdr workspace for it.
+# Usage:
+#   herdr-sessionizer.sh            # fzf-pick from search dirs
+#   herdr-sessionizer.sh /path/dir  # skip fzf, use given dir directly
+
+set -euo pipefail
+
+# --- Configure your project roots here ---
+# Add/remove dirs as needed. Uses `find -maxdepth` per root so it doesn't
+# crawl node_modules/.git/etc inside each project.
+SEARCH_DIRS=(
+    "$HOME/projects"
+)
+
+if [[ $# -eq 1 ]]; then
+    selected="$1"
+else
+    # Build the candidate list from all configured roots, depth 1
+    selected=$(
+        find "${SEARCH_DIRS[@]}" -mindepth 1 -maxdepth 1 -type d 2>/dev/null \
+        | fzf --prompt="Project> " --height=40% --reverse --border
+    )
+fi
+
+# Nothing selected (fzf cancelled with Esc/Ctrl-C)
+[[ -z "${selected:-}" ]] && exit 0
+
+selected_name=$(basename "$selected" | tr '.' '_')
+
+# Look for an existing workspace with a matching label
+existing_id=$(
+    herdr workspace list \
+    | jq -r --arg label "$selected_name" \
+        '.result.workspaces[] | select(.label == $label) | .workspace_id' \
+    | head -n1
+)
+
+if [[ -n "${existing_id:-}" ]]; then
+    herdr workspace focus "$existing_id"
+else
+    herdr workspace create --cwd "$selected" --label "$selected_name" --focus
+fi

@@ -126,11 +126,10 @@ IFS=$SAVEIFS
 plugins=(
     git
     zsh-fzf-history-search
-    zsh-syntax-highlighting
 )
 source $ZSH/oh-my-zsh.sh
 source ~/.zsh_profile
-source ~/.zsh_env
+[ -f ~/.zsh_env ] && source ~/.zsh_env
 source ~/.zsh_scripts
 # User configuration
 
@@ -149,6 +148,7 @@ source ~/.zsh_scripts
 # Compilation flags
 # export ARCHFLAGS="-arch x86_64"
 alias pacman='LANG=C pacman'
+alias exa="eza"
 # Set personal aliases, overriding those provided by oh-my-zsh libs,
 # plugins, and themes. Aliases can be placed here, though oh-my-zsh
 # users are encouraged to define aliases within the ZSH_CUSTOM folder.
@@ -167,13 +167,20 @@ export NVM_DIR="$HOME/.nvm"
 
 [ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
 
-# pnpm
-export PNPM_HOME="/home/heitor/.local/share/pnpm"
-case ":$PATH:" in
-  *":$PNPM_HOME:"*) ;;
-  *) export PATH="$PNPM_HOME:$PATH" ;;
-esac
-# pnpm end
-
 # opencode
 export PATH=/home/heitor/.opencode/bin:$PATH
+
+# opencode
+export PATH=/Users/Heitor.Anjos/.opencode/bin:$PATH
+
+[ -f "$HOME/.local/bin/env" ] && . "$HOME/.local/bin/env"
+
+# >>> headroom persistent env >>>
+export HEADROOM_PORT="8787"
+export HEADROOM_HOST="127.0.0.1"
+export HEADROOM_MODE="cache"
+export HEADROOM_BACKEND="anthropic"
+export HEADROOM_TELEMETRY="off"
+export COPILOT_PROVIDER_TYPE="anthropic"
+export COPILOT_PROVIDER_BASE_URL="http://127.0.0.1:8787"
+# <<< headroom persistent env <<<

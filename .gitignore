@@ -1,0 +1,6 @@
+# secrets / machine-local env, sourced by .zshrc
+zsh/.zsh_env
+
+# local tool state
+.claude/
+.DS_Store
